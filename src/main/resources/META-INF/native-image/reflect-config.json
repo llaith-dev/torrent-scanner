@@ -1,0 +1,30 @@
+[
+  {
+    "name" : "dev.llaith.TorrentToCsvExporterCli",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "fields" : [
+      { "name" : "clobber" },
+      { "name" : "directoryPath" },
+      { "name" : "dryRun" },
+      { "name" : "indexFilePath" },
+      { "name" : "outputDir" },
+      { "name" : "quiet" },
+      { "name" : "skipScanning" },
+      { "name" : "verbose" }
+    ]
+  },
+  {
+    "name" : "picocli.CommandLine$AutoHelpMixin",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "fields" : [
+      { "name" : "helpRequested" },
+      { "name" : "versionRequested" }
+    ]
+  }
+]
