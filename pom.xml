@@ -82,9 +82,15 @@
             <version>${logback.version}</version>
         </dependency>
 
+        <!-- JLine for console output with colors -->
         <dependency>
             <groupId>org.jline</groupId>
             <artifactId>jline</artifactId>
+            <version>${jline3.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jline</groupId>
+            <artifactId>jline-terminal-jansi</artifactId>
             <version>${jline3.version}</version>
         </dependency>
 

@@ -16,9 +16,8 @@
 
 package dev.llaith;
 
-import ch.qos.logback.classic.Level;
-import ch.qos.logback.classic.Logger;
-import ch.qos.logback.classic.LoggerContext;
+import dev.llaith.console.ConsoleOutput;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
@@ -41,7 +40,8 @@ import java.util.concurrent.Callable;
     description = "Scans a directory for torrent files and exports their information to CSV files."
 )
 public class TorrentToCsvExporterCli implements Callable<Integer> {
-    private static final org.slf4j.Logger logger = LoggerFactory.getLogger(TorrentToCsvExporterCli.class);
+    private static final Logger logger = LoggerFactory.getLogger(TorrentToCsvExporterCli.class);
+    private ConsoleOutput console;
 
     @Parameters(index = "0", description = "The directory to scan for torrent files")
     protected String directoryPath;
@@ -81,16 +81,18 @@ public class TorrentToCsvExporterCli implements Callable<Integer> {
 
     @Override
     public Integer call() {
-        configureLogging();
+        // Initialize console output with command line flags
+        console = new ConsoleOutput(this.verbose, this.quiet);
 
         logger.info("Starting torrent-scanner application");
-        logger.debug("Command line options: verbose={}, quiet={}, dry-run={}, clobber={}, generate-index={}, skip-scanning={}",
+        console.info("Starting torrent-scanner application");
+
+        console.debug("Command line options: verbose={}, quiet={}, dry-run={}, clobber={}, generate-index={}, skip-scanning={}",
                      this.verbose, this.quiet, this.dryRun, this.clobber, this.indexFilePath, this.skipScanning);
 
         // Check if skip-scanning is passed without generate-index
         if (this.skipScanning && (this.indexFilePath == null || this.indexFilePath.isEmpty())) {
-            logger.info("Skip scanning mode enabled but no index file specified. Nothing to do.");
-            System.out.println("Nothing to do");
+            console.info("Skip scanning mode enabled but no index file specified. Nothing to do.");
             return 0;
         }
 
@@ -100,7 +102,7 @@ public class TorrentToCsvExporterCli implements Callable<Integer> {
             // Perform scanning if not skipped
             if (!this.skipScanning) {
                 processedCount = scanDirectory();
-                logger.info("Finished processing {} torrent files", processedCount);
+                console.info("Finished processing " + processedCount + " torrent files");
             }
 
             // Generate index file if requested
@@ -108,11 +110,11 @@ public class TorrentToCsvExporterCli implements Callable<Integer> {
                 generateIndex();
             }
 
-            logger.info("Successfully processed {} torrent files", processedCount);
+            console.info("Successfully processed " + processedCount + " torrent files");
             return 0;
         } catch (final IOException e) {
             logger.error("Error processing directory: {}", e.getMessage(), e);
-            logger.error("Error: {}", e.getMessage());
+            console.error("Error processing directory: " + e.getMessage());
             return 1;
         }
     }
@@ -123,7 +125,7 @@ public class TorrentToCsvExporterCli implements Callable<Integer> {
      * @throws IOException if an I/O error occurs
      */
     protected void generateIndex() throws IOException {
-        logger.info("Generating index file: {}", this.indexFilePath);
+        console.info("Generating index file: " + this.indexFilePath);
         TorrentToCsvExporter.generateIndex(this.directoryPath, this.indexFilePath, this.dryRun, this.clobber);
     }
 
@@ -136,32 +138,5 @@ public class TorrentToCsvExporterCli implements Callable<Integer> {
      */
     protected int scanDirectory() throws IOException {
         return TorrentToCsvExporter.scanDirectory(this.directoryPath, this.outputDir, this.dryRun, this.clobber);
-    }
-
-    /**
-     * Configures logging based on command line options.
-     */
-    private void configureLogging() {
-        final LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
-        final Logger rootLogger = loggerContext.getLogger(org.slf4j.Logger.ROOT_LOGGER_NAME);
-        final Logger appLogger = loggerContext.getLogger("dev.llaith");
-
-        // Set console appender level based on command line options
-        if (this.verbose) {
-            // In verbose mode, show debug logs
-            rootLogger.getAppender("CONSOLE").setContext(loggerContext);
-            rootLogger.setLevel(Level.DEBUG);
-        } else if (this.quiet) {
-            // In quiet mode, only show error logs
-            rootLogger.getAppender("CONSOLE").setContext(loggerContext);
-            rootLogger.setLevel(Level.ERROR);
-        } else {
-            // Default: show info logs and above
-            rootLogger.getAppender("CONSOLE").setContext(loggerContext);
-            rootLogger.setLevel(Level.INFO);
-        }
-
-        // Always keep debug level for file logging
-        appLogger.setLevel(Level.DEBUG);
     }
 }
