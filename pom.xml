@@ -26,8 +26,8 @@
     <description>A tool for scanning and exporting torrent file information to CSV format</description>
 
     <properties>
-        <maven.compiler.source>24</maven.compiler.source>
-        <maven.compiler.target>24</maven.compiler.target>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <slf4j.version>2.0.9</slf4j.version>
         <logback.version>1.4.12</logback.version>
@@ -125,7 +125,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>dev.llaith.TorrentToCsvExporterCli</mainClass>
+                            <mainClass>dev.llaith.Main</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
