@@ -38,7 +38,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <slf4j.version>2.0.9</slf4j.version>
         <logback.version>1.4.12</logback.version>
-        <junit.version>5.10.0</junit.version>
+        <junit.version>5.14.4</junit.version>
         <bt.version>1.10</bt.version>
         <picocli.version>4.7.6</picocli.version>
         <jackson.version>2.16.1</jackson.version>
