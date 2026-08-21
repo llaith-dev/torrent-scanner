@@ -41,7 +41,7 @@
         <junit.version>5.10.0</junit.version>
         <bt.version>1.10</bt.version>
         <picocli.version>4.7.6</picocli.version>
-        <jackson.version>2.16.1</jackson.version>
+        <jackson.version>2.22.2</jackson.version>
     </properties>
 
     <repositories>
