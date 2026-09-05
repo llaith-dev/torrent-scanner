@@ -36,7 +36,7 @@
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <slf4j.version>2.0.9</slf4j.version>
+        <slf4j.version>2.0.19</slf4j.version>
         <logback.version>1.4.12</logback.version>
         <junit.version>5.10.0</junit.version>
         <bt.version>1.10</bt.version>
